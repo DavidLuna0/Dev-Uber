@@ -1,44 +1,29 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React, {Component} from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-} from 'react-native';
+import { createStackNavigator, createAppContainer} from 'react-navigation';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import ReduxThunk from 'redux-thunk';
 
-import MapView from 'react-native-maps';
+import Reducers from './src/Reducers';
+
+import Preload from './src/screens/Preload';
+
+const AppNavigator = createStackNavigator({
+  Preload: {
+    screen: Preload
+  }
+});
+
+const AppContainer = createAppContainer(AppNavigator);
+
+const store = createStore(Reducers, applyMiddleware(ReduxThunk));
 
 export default class App extends Component {
   render() {
     return (
-      <View style={styles.body}>
-        <Text>Funcionando</Text>
-        <MapView 
-          style={{width: 300, height: 300}}
-          initialRegion = {{
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta:0.0922,
-            longitudeDelta:0.0421
-          }}
-        />
-      </View>
-    );
+      <Provider store={store}>
+        <AppContainer/>
+      </Provider>
+    )
   }
-};
-
-const styles = StyleSheet.create({
-  body: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  }
-});
-
+}
