@@ -13,11 +13,22 @@ const AuthReducer = (state = initialState, action) => {
     }
 
     if(action.type == "setEmail") {
-        return {...state, email: action.payload.email};
+        let isValid = false;
+        let re = /[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+        if(re.test(action.payload.email.toLowerCase())) {
+            isValid = true;
+        }
+
+        return {...state, email: action.payload.email, emailValid:isValid};
     }
 
     if(action.type == "setPassword") {
-        return {...state, pass: action.payload.pass};
+        let isValid = false;
+
+        if(action.payload.pass.length > 4) {
+            isValid = true;
+        }
+        return {...state, pass: action.payload.pass, passValid: isValid};
     }
 
     return state;

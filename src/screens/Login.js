@@ -20,9 +20,9 @@ export class Login extends Component {
             <Text style={styles.header}>Login</Text>
 
             <View style={styles.fieldArea}>
-                <Text style={styles.fieldTitle}>E-MAIL</Text>
+                <Text style={styles.fieldTitle}>E-MAIL </Text>
                 <View style={styles.fieldItemArea}>
-                    <TextInput style={styles.fieldItem} value={this.props.email} />
+                    <TextInput style={styles.fieldItem} value={this.props.email} onChangeText={(text) => this.props.setEmail(text)} />
                     <View style={styles.fieldItemStatus}>
                         {this.props.emailValid && 
                             <Image style={styles.fieldItemStatusImg} source={require('../assets/checked.png')} />
@@ -32,9 +32,9 @@ export class Login extends Component {
             </View>
 
             <View style={styles.fieldArea}>
-                <Text style={styles.fieldTitle}>SENHA</Text>
+                <Text style={styles.fieldTitle}>SENHA </Text>
                 <View style={styles.fieldItemArea}>
-                    <TextInput style={styles.fieldItem} value={this.props.pass} />
+                    <TextInput style={styles.fieldItem} value={this.props.pass} onChangeText={(text) => this.props.setPassword(text)} />
                     <View style={styles.fieldItemStatus}>
                         {this.props.passValid && 
                             <Image style={styles.fieldItemStatusImg} source={require('../assets/checked.png')} />
