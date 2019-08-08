@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { View, Text, ImageBackground, StyleSheet, TextInput, Image } from 'react-native';
+import { connect } from 'react-redux';
+import { setEmail, setPassword } from '../actions/AuthActions'
 
 // import { Container } from './styles';
 
-export default class Login extends Component {
+export class Login extends Component {
     static navigationOptions ={
         header: null
     }
@@ -20,9 +22,11 @@ export default class Login extends Component {
             <View style={styles.fieldArea}>
                 <Text style={styles.fieldTitle}>E-MAIL</Text>
                 <View style={styles.fieldItemArea}>
-                    <TextInput style={styles.fieldItem}/>
+                    <TextInput style={styles.fieldItem} value={this.props.email} />
                     <View style={styles.fieldItemStatus}>
-                        <Image style={styles.fieldItemStatusImg} source={require('../assets/checked.png')} />
+                        {this.props.emailValid && 
+                            <Image style={styles.fieldItemStatusImg} source={require('../assets/checked.png')} />
+                        }
                     </View>
                 </View>
             </View>
@@ -30,9 +34,11 @@ export default class Login extends Component {
             <View style={styles.fieldArea}>
                 <Text style={styles.fieldTitle}>SENHA</Text>
                 <View style={styles.fieldItemArea}>
-                    <TextInput style={styles.fieldItem}/>
+                    <TextInput style={styles.fieldItem} value={this.props.pass} />
                     <View style={styles.fieldItemStatus}>
-                        <Image style={styles.fieldItemStatusImg} source={require('../assets/checked.png')} />
+                        {this.props.passValid && 
+                            <Image style={styles.fieldItemStatusImg} source={require('../assets/checked.png')} />
+                        }
                     </View>
                 </View>
             </View>
@@ -81,3 +87,16 @@ const styles = StyleSheet.create({
         height: 25
     }
 })
+
+const mapStateToProps = (state) => {
+  return {
+      status: state.auth.status,
+      email: state.auth.email,
+      pass: state.auth.pass,
+      emailValid: state.auth.emailValid,
+      passValid: state.auth.passValid,
+  }
+};
+
+const LoginConnect = connect(mapStateToProps,{setEmail, setPassword})(Login);
+export default LoginConnect;

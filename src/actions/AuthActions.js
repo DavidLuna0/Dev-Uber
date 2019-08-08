@@ -7,3 +7,21 @@ export const checkLogin = () => {
         }
     }
 }
+
+export const setEmail = (email) => {
+    return {
+        type: 'setEmail',
+        payload: {
+            email
+        }
+    }
+}
+
+export const setPassword = (pass) => {
+    return {
+        type: 'setPassword',
+        payload: {
+            pass
+        }
+    }
+}
