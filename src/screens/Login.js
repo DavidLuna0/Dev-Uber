@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, ImageBackground, StyleSheet, TextInput, Image, KeyboardAvoidingView, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
-import { setEmail, setPassword } from '../actions/AuthActions'
+import { setEmail, setPassword, doLogin } from '../actions/AuthActions'
 
 // import { Container } from './styles';
 
@@ -13,7 +13,32 @@ export class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {}
+
+        this.loginAction = this.loginAction.bind(this);
+        this.verifyStatus = this.verifyStatus.bind(this);
+        this.goToSignUp = this.goToSignUp.bind(this);
     }
+
+    loginAction() {
+        if (this.props.emailValid && this.props.passValid) {
+            this.props.doLogin(this.props.email, this.props.pass);
+        }
+    }
+
+    componentDidUpdate() {
+        this.verifyStatus();
+    }
+
+    verifyStatus() {
+        if(this.props.status === 1) {
+            alert("Manda pra HOME")
+        }
+    }
+
+    goToSignUp() {
+        this.props.navigation.navigate('SignUp');
+    }
+
     render() {
         let buttonOpacity = 0.2;
         if (this.props.emailValid && this.props.passValid) {
@@ -39,7 +64,7 @@ export class Login extends Component {
                     <View style={styles.fieldArea}>
                         <Text style={styles.fieldTitle}>SENHA </Text>
                         <View style={styles.fieldItemArea}>
-                            <TextInput style={styles.fieldItem} value={this.props.pass} onChangeText={(text) => this.props.setPassword(text)} />
+                            <TextInput style={styles.fieldItem} secureTextEntry={true} value={this.props.pass} onChangeText={(text) => this.props.setPassword(text)} />
                             <View style={styles.fieldItemStatus}>
                                 {this.props.passValid &&
                                     <Image style={styles.fieldItemStatusImg} source={require('../assets/checked.png')} />
@@ -52,11 +77,11 @@ export class Login extends Component {
                         <TouchableHighlight underlayColor={null} style={styles.bText} onPress={() => {}}>
                             <Text style={styles.bTextInt}>Esqueceu a senha?</Text>
                         </TouchableHighlight>
-                        <TouchableHighlight underlayColor={null} style={styles.bText} onPress={() => {}}>
+                        <TouchableHighlight underlayColor={null} style={styles.bText} onPress={this.goToSignUp}>
                             <Text style={styles.bTextInt}>Cadastre-se</Text>
                         </TouchableHighlight>
                     </View>
-                    <TouchableHighlight underlayColor={null} style={[styles.button, { opacity: buttonOpacity }]} onPress={() => { }}>
+                    <TouchableHighlight underlayColor={null} style={[styles.button, { opacity: buttonOpacity }]} onPress={this.loginAction}>
                         <Text style={styles.buttonText}>></Text>
                     </TouchableHighlight>
 
@@ -152,5 +177,5 @@ const mapStateToProps = (state) => {
     }
 };
 
-const LoginConnect = connect(mapStateToProps, { setEmail, setPassword })(Login);
+const LoginConnect = connect(mapStateToProps, { setEmail, setPassword, doLogin })(Login);
 export default LoginConnect;
