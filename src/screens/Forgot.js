@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, ImageBackground, StyleSheet, TextInput, Image, KeyboardAvoidingView, TouchableHighlight, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
-import { setName, setEmail, setPassword, doSignUp } from '../actions/AuthActions'
+import { setEmail, doForgot } from '../actions/AuthActions'
 
 // import { Container } from './styles';
 
@@ -64,7 +64,7 @@ export class Forgot extends Component {
                     </KeyboardAvoidingView>
                 </ScrollView>
 
-                <TouchableHighlight underlayColor={null} style={[styles.button, { opacity: buttonOpacity }]} onPress={this.signUpAction}>
+                <TouchableHighlight underlayColor={null} style={[styles.button, { opacity: buttonOpacity }]} onPress={this.forgotAction}>
                     <Text style={styles.buttonText}>></Text>
                 </TouchableHighlight>
 
@@ -159,5 +159,5 @@ const mapStateToProps = (state) => {
     }
 };
 
-const ForgotConnect = connect(mapStateToProps, { setName, setEmail, setPassword, doSignUp })(Forgot);
+const ForgotConnect = connect(mapStateToProps, { setEmail,  doForgot })(Forgot);
 export default ForgotConnect;

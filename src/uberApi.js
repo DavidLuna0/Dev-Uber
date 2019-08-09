@@ -25,3 +25,11 @@ export const makeSignUp = function(name, email, password) {
     })
 }
 
+export const makeForgot = function(email) {
+    return new Promise((resolve, reject) => {  
+        setTimeout(() => {
+            resolve(status);
+        }, 2000)
+    })
+}
+
