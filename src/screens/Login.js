@@ -17,6 +17,7 @@ export class Login extends Component {
         this.loginAction = this.loginAction.bind(this);
         this.verifyStatus = this.verifyStatus.bind(this);
         this.goToSignUp = this.goToSignUp.bind(this);
+        this.goToForgot = this.goToForgot.bind(this);
     }
 
     loginAction() {
@@ -37,6 +38,10 @@ export class Login extends Component {
 
     goToSignUp() {
         this.props.navigation.navigate('SignUp');
+    }
+
+    goToForgot() {
+        this.props.navigation.navigate('Forgot');
     }
 
     render() {
@@ -74,7 +79,7 @@ export class Login extends Component {
                     </View>
 
                     <View style={styles.bArea}>
-                        <TouchableHighlight underlayColor={null} style={styles.bText} onPress={() => {}}>
+                        <TouchableHighlight underlayColor={null} style={styles.bText} onPress={this.goToForgot}>
                             <Text style={styles.bTextInt}>Esqueceu a senha?</Text>
                         </TouchableHighlight>
                         <TouchableHighlight underlayColor={null} style={styles.bText} onPress={this.goToSignUp}>

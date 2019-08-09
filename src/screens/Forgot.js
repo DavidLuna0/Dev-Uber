@@ -5,7 +5,7 @@ import { setName, setEmail, setPassword, doSignUp } from '../actions/AuthActions
 
 // import { Container } from './styles';
 
-export class SignUp extends Component {
+export class Forgot extends Component {
     static navigationOptions = {
         headerStyle: {
             backgroundColor: '#0F6675'
@@ -17,13 +17,13 @@ export class SignUp extends Component {
         super(props);
         this.state = {}
 
-        this.signUpAction = this.signUpAction.bind(this);
+        this.forgotAction = this.forgotAction.bind(this);
         this.verifyStatus = this.verifyStatus.bind(this);
     }
 
-    signUpAction() {
-        if (this.props.nameValid && this.props.emailValid && this.props.passValid) {
-            this.props.doSignUp(this.props.name, this.props.email, this.props.pass);
+    forgotAction() {
+        if (this.props.emailValid) {
+            this.props.doForgot(this.props.email);
         }
     }
 
@@ -39,7 +39,7 @@ export class SignUp extends Component {
 
     render() {
         let buttonOpacity = 0.2;
-        if (this.props.nameValid && this.props.emailValid && this.props.passValid) {
+        if (this.props.emailValid) {
             buttonOpacity = 1;
         }
         return (
@@ -47,19 +47,7 @@ export class SignUp extends Component {
                 <ScrollView style={styles.scrollViewStyle}>
 
                     <KeyboardAvoidingView style={styles.keyboardContainer} behavior="padding" enabled>
-                        <Text style={styles.header}>Cadastre-se</Text>
-
-                        <View style={styles.fieldArea}>
-                            <Text style={styles.fieldTitle}>Nome </Text>
-                            <View style={styles.fieldItemArea}>
-                                <TextInput style={styles.fieldItem} value={this.props.name} onChangeText={(text) => this.props.setName(text)} />
-                                <View style={styles.fieldItemStatus}>
-                                    {this.props.nameValid &&
-                                        <Image style={styles.fieldItemStatusImg} source={require('../assets/checked.png')} />
-                                    }
-                                </View>
-                            </View>
-                        </View>
+                        <Text style={styles.header}>Esqueceu a senha?</Text>
 
                         <View style={styles.fieldArea}>
                             <Text style={styles.fieldTitle}>E-MAIL </Text>
@@ -67,18 +55,6 @@ export class SignUp extends Component {
                                 <TextInput style={styles.fieldItem} value={this.props.email} onChangeText={(text) => this.props.setEmail(text)} />
                                 <View style={styles.fieldItemStatus}>
                                     {this.props.emailValid &&
-                                        <Image style={styles.fieldItemStatusImg} source={require('../assets/checked.png')} />
-                                    }
-                                </View>
-                            </View>
-                        </View>
-
-                        <View style={styles.fieldArea}>
-                            <Text style={styles.fieldTitle}>SENHA </Text>
-                            <View style={styles.fieldItemArea}>
-                                <TextInput style={styles.fieldItem} secureTextEntry={true} value={this.props.pass} onChangeText={(text) => this.props.setPassword(text)} />
-                                <View style={styles.fieldItemStatus}>
-                                    {this.props.passValid &&
                                         <Image style={styles.fieldItemStatusImg} source={require('../assets/checked.png')} />
                                     }
                                 </View>
@@ -178,14 +154,10 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
     return {
         status: state.auth.status,
-        name: state.auth.name,
         email: state.auth.email,
-        pass: state.auth.pass,
-        nameValid: state.auth.nameValid,
         emailValid: state.auth.emailValid,
-        passValid: state.auth.passValid,
     }
 };
 
-const SignUpConnect = connect(mapStateToProps, { setName, setEmail, setPassword, doSignUp })(SignUp);
-export default SignUpConnect;
+const ForgotConnect = connect(mapStateToProps, { setName, setEmail, setPassword, doSignUp })(Forgot);
+export default ForgotConnect;
