@@ -1,4 +1,4 @@
-import { verifyLogin, makeLogin, makeSignUp } from "../uberApi";
+import { verifyLogin, makeLogin, makeSignUp, makeForgot } from "../uberApi";
 
 //import { } from '../uberApi'
 export const checkLogin = () => {
@@ -79,6 +79,16 @@ export const doSignUp = (name, email, password) => {
                     status
                 }
             })
+        }).catch(() => {
+            alert("Tente novamente mais tarde")
+        });
+    }
+}
+
+export const doForgot = (email) => {
+    return (dispatch) => {
+        makeForgot(email).then(() => {
+            alert("Enviamos um email de redefinição de senha!")
         }).catch(() => {
             alert("Tente novamente mais tarde")
         });
