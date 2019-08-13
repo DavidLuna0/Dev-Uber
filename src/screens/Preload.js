@@ -24,7 +24,12 @@ export class Preload extends Component {
     verifyStatus() {
         switch(this.props.status) {
             case 1:
-                alert("Manda pra HOME")
+                this.props.navigation.dispatch(StackActions.reset({
+                    index:0,
+                    actions: [
+                        NavigationActions.navigate({routeName: 'HomeNav'})
+                    ]
+                }));
                 break;
             case 2:
                 this.props.navigation.dispatch(StackActions.reset({

@@ -10,6 +10,7 @@ import Preload from './src/screens/Preload';
 import Login from './src/screens/Login';
 import SignUp from './src/screens/SignUp';
 import Forgot from './src/screens/Forgot';
+import HomeNav from './src/screens/HomeNav';
 
 const AppNavigator = createStackNavigator({
   Preload: {
@@ -23,6 +24,12 @@ const AppNavigator = createStackNavigator({
   },
   Forgot: {
     screen: Forgot
+  },
+  HomeNav: {
+    screen: HomeNav,
+    navigationOptions: {
+      header: null
+    }
   }
 });
 

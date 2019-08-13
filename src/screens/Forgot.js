@@ -18,22 +18,11 @@ export class Forgot extends Component {
         this.state = {}
 
         this.forgotAction = this.forgotAction.bind(this);
-        this.verifyStatus = this.verifyStatus.bind(this);
     }
 
     forgotAction() {
         if (this.props.emailValid) {
             this.props.doForgot(this.props.email);
-        }
-    }
-
-    componentDidUpdate() {
-        this.verifyStatus();
-    }
-
-    verifyStatus() {
-        if(this.props.status === 1) {
-            alert("Manda pra HOME")
         }
     }
 

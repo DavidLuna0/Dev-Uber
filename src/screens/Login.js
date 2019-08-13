@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, ImageBackground, StyleSheet, TextInput, Image, KeyboardAvoidingView, TouchableHighlight } from 'react-native';
+import { StackActions, NavigationActions} from 'react-navigation';
 import { connect } from 'react-redux';
 import { setEmail, setPassword, doLogin } from '../actions/AuthActions'
 
@@ -32,7 +33,12 @@ export class Login extends Component {
 
     verifyStatus() {
         if(this.props.status === 1) {
-            alert("Manda pra HOME")
+            this.props.navigation.dispatch(StackActions.reset({
+                index:0,
+                actions: [
+                    NavigationActions.navigate({routeName: 'HomeNav'})
+                ]
+            }));
         }
     }
 
