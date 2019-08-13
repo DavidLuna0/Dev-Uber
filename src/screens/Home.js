@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Animated } from 'react-native';
 import { connect } from 'react-redux'
 import MapView from 'react-native-maps';
 
@@ -26,17 +26,64 @@ export class Home extends Component {
         longitude: -46.8,
         latitudeDelta: 0.004,
         longitudeDelta: 0.004,
-      }
+      },
+      isLoading: false,
+      loadingMsg: '',
+      warnHeight: new Animated.Value(0)
     }
+
+    this.setWarning = this.setWarning.bind(this);
+  }
+
+  componentDidMount() {
+
+    this.setWarning(true, 'Procurando sua localização...')
+
+    setTimeout(() => {
+      this.setWarning(false, '')
+    }, 3000)
+  }
+
+  setWarning(status, msg) {
+
+    if(status ===true && msg != '') {
+      this.setState({
+        isLoading: status,
+        loadingMsg: msg
+      });
+
+      Animated.timing(
+        this.state.warnHeight,
+        {
+          toValue: 35,
+          duration: 300
+        }
+      ).start();
+    } else if(status === false) {
+      this.setState({
+        isLoading: status,
+        loadingMsg: ''
+      });
+
+      Animated.timing(
+        this.state.warnHeight,
+        {
+          toValue: 0,
+          duration: 300
+        }
+      ).start();
+    }
+    
   }
 /* MapView recebe duas props principaisa  regiao inicial e o style */
   render() {
     return(
         <View style={styles.container}>
-          
             <MapView style={styles.map} initialRegion={this.state.currentLocation}>
-
             </MapView>
+              <Animated.View styles={[styles.warnBox, {height: this.state.warnHeight}]}>
+                <Text styles={styles.warnText}>{this.state.loadingMsg}</Text>
+              </Animated.View>
         </View>
     )
   }
@@ -48,6 +95,19 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1
+  },
+  warnBox: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: '100%',
+    backgroundColor: '#000000',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  warnText: {
+    fontSize: 13,
+    color: '#FFFFFF'
   }
 })
 
