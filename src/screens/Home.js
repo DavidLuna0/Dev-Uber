@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Animated } from 'react-native';
+import { View, Text, StyleSheet, Animated, Platform, PermissionsAndroid } from 'react-native';
 import { connect } from 'react-redux'
 import MapView from 'react-native-maps';
+import Geolocation from 'react-native-geolocation-service';
 
 export class Home extends Component {
+
+  watchId = null;
 
   static navigationOptions = {
     title: 'DevsUber 1.0',
@@ -33,20 +36,69 @@ export class Home extends Component {
     }
 
     this.setWarning = this.setWarning.bind(this);
+    this.getCurrentLocation = this.getCurrentLocation.bind(this);
+    this.requestLocationPermission = this.requestLocationPermission.bind(this);
   }
 
   componentDidMount() {
+    this.getCurrentLocation();
+  }
 
-    this.setWarning(true, 'Procurando sua localização...')
+  getCurrentLocation = async () => {
+    this.setWarning(true, 'Procurando sua localização...');
+    if (await this.requestLocationPermission) {
+      this.watchId = Geolocation.watchPosition(
+        (position) => {
+          this.setWarning(false, '');
+          this.setState({
+            currentLocation: {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              latitudeDelta: 0.004,
+              longitudeDelta: 0.004
+            }
+          })
 
-    setTimeout(() => {
-      this.setWarning(false, '')
-    }, 3000)
+        },
+        (error) => {
+          this.setWarning(false, '');
+          alert("Erro na loc: " + error.message)
+        },
+        { enableHighAccuracy: true, interval: 5000, timeout: 15000, maximumAge: 10000 }
+      )
+    } else {
+      this.setWarning(false, '');
+    }
+  }
+
+  async requestLocationPermission() {
+    if (Platform.OS == 'android') {
+      alert("Inicio")
+      try {
+        const g = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: 'Pegar localização',
+            message: 'Este aplicativo precisa ter acesso a sua localização'
+          }
+        );
+
+        if (g == PermissionsAndroid.RESULTS.GRANTED) {
+          return true;
+        } else {
+          return false;
+        }
+      } catch (e) {
+        return false;
+      }
+    } else {
+      return true;
+    }
   }
 
   setWarning(status, msg) {
 
-    if(status ===true && msg != '') {
+    if (status === true && msg != '') {
       this.setState({
         isLoading: status,
         loadingMsg: msg
@@ -59,7 +111,7 @@ export class Home extends Component {
           duration: 300
         }
       ).start();
-    } else if(status === false) {
+    } else if (status === false) {
       this.setState({
         isLoading: status,
         loadingMsg: ''
@@ -73,18 +125,18 @@ export class Home extends Component {
         }
       ).start();
     }
-    
+
   }
-/* MapView recebe duas props principaisa  regiao inicial e o style */
+  /* MapView recebe duas props principaisa  regiao inicial e o style */
   render() {
-    return(
-        <View style={styles.container}>
-            <MapView style={styles.map} initialRegion={this.state.currentLocation}>
-            </MapView>
-              <Animated.View styles={[styles.warnBox, {height: this.state.warnHeight}]}>
-                <Text styles={styles.warnText}>{this.state.loadingMsg}</Text>
-              </Animated.View>
-        </View>
+    return (
+      <View style={styles.container}>
+        <MapView style={styles.map} region={this.state.currentLocation}>
+        </MapView>
+        <Animated.View styles={[styles.warnBox, { height: this.state.warnHeight }]}>
+          <Text styles={styles.warnText}>{this.state.loadingMsg}</Text>
+        </Animated.View>
+      </View>
     )
   }
 }
