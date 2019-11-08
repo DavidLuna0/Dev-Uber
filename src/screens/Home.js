@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import MapView from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 
+import SearchBox from '../components/Home/SearchBox';
+
 export class Home extends Component {
 
   watchId = null;
@@ -136,6 +138,7 @@ export class Home extends Component {
         <Animated.View styles={[styles.warnBox, { height: this.state.warnHeight }]}>
           <Text styles={styles.warnText}>{this.state.loadingMsg}</Text>
         </Animated.View>
+        <SearchBox />
       </View>
     )
   }
